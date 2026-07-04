@@ -50,7 +50,6 @@ class AuthController extends AbstractController
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        // Vérifier si l'utilisateur existe déjà
         $existingUser = $entityManager->getRepository(User::class)->findOneBy(['email' => $data['email']]);
         if ($existingUser) {
             return new JsonResponse([
@@ -63,11 +62,9 @@ class AuthController extends AbstractController
         $user->setNom($data['nom']);
         $user->setPrenom($data['prenom']);
 
-        // Hacher le mot de passe
         $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
         $user->setPassword($hashedPassword);
 
-        // Assigner les rôles
         $roles = $data['roles'] ?? ['ROLE_USER'];
         if (!is_array($roles)) {
             $roles = [$roles];

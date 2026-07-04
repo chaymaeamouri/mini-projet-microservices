@@ -11,27 +11,22 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Page publique - redirige si déjà connecté */}
           <Route path="/login" element={
             <RequireGuest><LoginPage /></RequireGuest>
           } />
 
-          {/* Dashboard - Admin seulement */}
           <Route path="/dashboard" element={
             <RequireAdmin><DashboardPage /></RequireAdmin>
           } />
 
-          {/* Etudiants - tout utilisateur connecté */}
           <Route path="/students" element={
             <RequireAuth><StudentsPage /></RequireAuth>
           } />
 
-          {/* Profil - tout utilisateur connecté */}
           <Route path="/profile" element={
             <RequireAuth><ProfilePage /></RequireAuth>
           } />
 
-          {/* Redirection par défaut */}
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>

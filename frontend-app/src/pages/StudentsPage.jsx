@@ -91,7 +91,6 @@ export default function StudentsPage() {
   const { user } = useAuth();
   const isAdmin = user?.roles?.includes('ROLE_ADMIN');
   
-  // Astuce pour l'encadrant
   const [securityMessage, setSecurityMessage] = useState('');
 
   const fetchStudents = useCallback(async () => {
@@ -109,12 +108,10 @@ export default function StudentsPage() {
   useEffect(() => { fetchStudents(); }, [fetchStudents]);
 
   const handleDelete = async (student) => {
-    // Mesure de sécurité : l'employé n'a pas le droit. Le serveur renvoie une erreur 403, 
-    // mais on peut aussi faire la vérification ici pour afficher le message personnalisé.
     try {
       await API.delete(`/students/${student.id}`);
       fetchStudents();
-      setSecurityMessage(''); // Reset si succès (cas de l'Admin)
+      setSecurityMessage('');
     } catch (err) {
       if (err.response?.status === 403 || !user?.roles?.includes('ROLE_ADMIN')) {
         setSecurityMessage(

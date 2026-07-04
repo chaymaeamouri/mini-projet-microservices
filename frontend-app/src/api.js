@@ -1,13 +1,10 @@
 import axios from 'axios';
 
-// En développement Vite fait le proxy lui-même (voir vite.config.js)
-// La base URL pointe vers /api/auth
 const API = axios.create({
   baseURL: '/api',
   headers: { 'Content-Type': 'application/json' },
 });
 
-// Injecte automatiquement le token JWT si présent
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -16,7 +13,6 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-// Gère les 401 automatiquement (token expiré)
 API.interceptors.response.use(
   (res) => res,
   (err) => {

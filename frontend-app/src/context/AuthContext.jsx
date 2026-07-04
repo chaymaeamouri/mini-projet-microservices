@@ -8,7 +8,6 @@ export function AuthProvider({ children }) {
   const [token, setToken]     = useState(localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
 
-  // Charge le profil au démarrage si un token est présent
   useEffect(() => {
     const stored = localStorage.getItem('user');
     if (token && stored) {
@@ -26,8 +25,6 @@ export function AuthProvider({ children }) {
     const { token: jwt } = res.data;
     localStorage.setItem('token', jwt);
     setToken(jwt);
-
-    // Récupère le profil complet
     const meRes = await API.get('/auth/me', {
       headers: { Authorization: `Bearer ${jwt}` },
     });
