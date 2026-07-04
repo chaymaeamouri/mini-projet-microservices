@@ -31,15 +31,20 @@ export default function LoginPage() {
       <div className="auth-card card">
         {/* Logo */}
         <div className="logo">
-          <span className="logo-text">Algolus</span>
+          <div className="logo-icon">🎓</div>
+          <div>
+            <div className="logo-text">Algolus</div>
+            <div className="logo-tagline">Portail de gestion</div>
+          </div>
         </div>
 
         <h1 className="page-title">Connexion</h1>
-        <p className="page-subtitle">Accédez à votre espace de gestion médicale</p>
+        <p className="page-subtitle">Accédez à votre espace de gestion</p>
 
         {error && (
           <div className="alert alert-error">
-            <span>⚠️</span> {error}
+            <span>⚠️</span>
+            <span>{error}</span>
           </div>
         )}
 
@@ -74,12 +79,16 @@ export default function LoginPage() {
           </div>
 
           <button type="submit" className="btn btn-primary" disabled={loading}>
-            {loading ? <><span className="spinner"></span> Connexion…</> : '🔐 Se connecter'}
+            {loading
+              ? <><span className="spinner"></span> Connexion en cours…</>
+              : '🔐 Se connecter'}
           </button>
         </form>
 
-        <p style={{ textAlign: 'center', marginTop: 24, fontSize: 13, color: 'var(--text-muted)' }}>
-          Portail sécurisé — Accès réservé au personnel autorisé
+        <div className="divider" style={{ margin: '24px 0 16px' }} />
+
+        <p style={{ textAlign: 'center', fontSize: 12, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+          <span>🔒</span> Portail sécurisé — Accès réservé au personnel autorisé
         </p>
       </div>
     </div>

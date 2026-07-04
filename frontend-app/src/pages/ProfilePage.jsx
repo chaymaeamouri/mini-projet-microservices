@@ -27,7 +27,7 @@ export default function ProfilePage() {
             <div className="profile-info">
               <h2>{user?.prenom} {user?.nom}</h2>
               <p>{user?.email}</p>
-              <div style={{ marginTop: 10 }}>
+              <div style={{ marginTop: 12 }}>
                 {getRoleBadge(user?.roles)}
               </div>
             </div>
@@ -49,13 +49,17 @@ export default function ProfilePage() {
             </div>
             <div className="info-item">
               <div className="info-item-label">Identifiant</div>
-              <div className="info-item-value">#{user?.id || '—'}</div>
+              <div className="info-item-value" style={{ fontFamily: 'monospace', color: 'var(--text-muted)' }}>
+                #{user?.id || '—'}
+              </div>
             </div>
             <div className="info-item" style={{ gridColumn: '1 / -1' }}>
-              <div className="info-item-label">Rôles</div>
-              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 4 }}>
+              <div className="info-item-label">Rôles système</div>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 8 }}>
                 {user?.roles?.map((role) => (
-                  <span key={role} className="badge badge-user">{role}</span>
+                  <span key={role} className="badge badge-user" style={{ fontFamily: 'monospace', fontSize: 11 }}>
+                    {role}
+                  </span>
                 ))}
               </div>
             </div>

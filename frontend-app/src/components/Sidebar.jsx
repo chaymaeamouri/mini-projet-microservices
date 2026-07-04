@@ -18,7 +18,11 @@ function Sidebar({ activePage }) {
     <aside className="sidebar">
       <div className="sidebar-logo">
         <div className="logo">
-          <span className="logo-text" style={{ fontSize: 18 }}>Algolus</span>
+          <div className="logo-icon">🎓</div>
+          <div>
+            <div className="logo-text">Algolus</div>
+            <div className="logo-tagline">Portail de gestion</div>
+          </div>
         </div>
       </div>
 
@@ -51,14 +55,15 @@ function Sidebar({ activePage }) {
 
       <div className="sidebar-bottom">
         <div className="user-info">
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
             <div style={{
-              width: 32, height: 32, borderRadius: '50%',
+              width: 36, height: 36, borderRadius: '50%',
               background: 'linear-gradient(135deg, var(--primary), var(--accent))',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 13, fontWeight: 700, color: 'white', flexShrink: 0
+              fontSize: 13, fontWeight: 800, color: 'white', flexShrink: 0,
+              boxShadow: '0 2px 10px var(--primary-glow)'
             }}>{initials || '?'}</div>
-            <div>
+            <div style={{ minWidth: 0 }}>
               <div className="user-name">{user?.prenom} {user?.nom}</div>
               <div className="user-email-small">{user?.email}</div>
             </div>
@@ -67,7 +72,12 @@ function Sidebar({ activePage }) {
             {isAdmin ? '👑 Admin' : '💼 Employé'}
           </span>
         </div>
-        <button className="btn btn-ghost btn-sm" style={{ width: '100%' }} onClick={handleLogout} id="btn-logout">
+        <button
+          className="btn btn-ghost btn-sm"
+          style={{ width: '100%' }}
+          onClick={handleLogout}
+          id="btn-logout"
+        >
           🚪 Se déconnecter
         </button>
       </div>

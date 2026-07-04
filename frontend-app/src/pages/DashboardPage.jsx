@@ -26,7 +26,7 @@ function CreateModal({ onClose, onCreated }) {
     setLoading(true);
     try {
       await API.post('/auth/register', form);
-      setSuccess(`✅ Compte créé pour ${form.email} !`);
+      setSuccess(`Compte créé pour ${form.email} !`);
       setTimeout(() => { onCreated(); onClose(); }, 1500);
     } catch (err) {
       setError(err.response?.data?.error || 'Erreur lors de la création.');
@@ -39,11 +39,12 @@ function CreateModal({ onClose, onCreated }) {
     <div className="modal-backdrop" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div className="modal">
         <div className="modal-title">➕ Créer un compte</div>
-        {error   && <div className="alert alert-error"><span>⚠️</span> {error}</div>}
-        {success && <div className="alert alert-success"><span>✅</span> {success}</div>}
+
+        {error   && <div className="alert alert-error"><span>⚠️</span><span>{error}</span></div>}
+        {success && <div className="alert alert-success"><span>✅</span><span>{success}</span></div>}
 
         <form onSubmit={handleSubmit}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
             <div className="form-group">
               <label className="form-label">Prénom</label>
               <input id="modal-prenom" className="form-input" placeholder="Ex: Jean" value={form.prenom}
@@ -57,7 +58,7 @@ function CreateModal({ onClose, onCreated }) {
           </div>
           <div className="form-group">
             <label className="form-label">Email</label>
-            <input id="modal-email" type="email" className="form-input" placeholder="jean.dupont@clinique.fr" value={form.email}
+            <input id="modal-email" type="email" className="form-input" placeholder="jean.dupont@exemple.fr" value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })} required />
           </div>
           <div className="form-group">
@@ -75,7 +76,7 @@ function CreateModal({ onClose, onCreated }) {
           <div className="modal-actions">
             <button type="button" className="btn btn-ghost" onClick={onClose} id="modal-cancel">Annuler</button>
             <button type="submit" className="btn btn-primary" disabled={loading} id="modal-submit">
-              {loading ? <><span className="spinner"></span> Création…</> : '✅ Créer'}
+              {loading ? <><span className="spinner"></span> Création…</> : '✅ Créer le compte'}
             </button>
           </div>
         </form>
@@ -96,7 +97,7 @@ export default function DashboardPage() {
       const res = await API.get('/auth/users');
       setUsers(res.data);
     } catch (err) {
-      setError("Impossible de charger la liste des comptes. L'endpoint /api/auth/users est peut-être manquant.");
+      setError("Impossible de charger la liste des comptes.");
     } finally {
       setLoading(false);
     }
@@ -104,7 +105,7 @@ export default function DashboardPage() {
 
   useEffect(() => { fetchUsers(); }, [fetchUsers]);
 
-  const adminCount  = users.filter(u => u.roles?.includes('ROLE_ADMIN')).length;
+  const adminCount   = users.filter(u => u.roles?.includes('ROLE_ADMIN')).length;
   const employeCount = users.filter(u => !u.roles?.includes('ROLE_ADMIN')).length;
 
   return (
@@ -113,33 +114,39 @@ export default function DashboardPage() {
       <Sidebar activePage="dashboard" />
 
       <main className="main-content">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 32 }}>
-          <div>
+        {/* Header */}
+        <div className="page-header">
+          <div className="page-header-left">
             <h1 className="page-title">Tableau de Bord</h1>
             <p className="page-subtitle">Gestion des comptes du personnel</p>
           </div>
-          <button className="btn btn-primary" style={{ width: 'auto' }} onClick={() => setShowModal(true)} id="btn-create-user">
+          <button
+            className="btn btn-primary"
+            style={{ width: 'auto' }}
+            onClick={() => setShowModal(true)}
+            id="btn-create-user"
+          >
             ➕ Nouveau compte
           </button>
         </div>
 
         {/* Stats */}
         <div className="stats-grid">
-          <div className="stat-card">
+          <div className="stat-card stat-card-purple">
             <div className="stat-icon stat-icon-purple">👥</div>
             <div>
               <div className="stat-value">{users.length}</div>
               <div className="stat-label">Total comptes</div>
             </div>
           </div>
-          <div className="stat-card">
+          <div className="stat-card stat-card-cyan">
             <div className="stat-icon stat-icon-cyan">👑</div>
             <div>
               <div className="stat-value">{adminCount}</div>
               <div className="stat-label">Administrateurs</div>
             </div>
           </div>
-          <div className="stat-card">
+          <div className="stat-card stat-card-green">
             <div className="stat-icon stat-icon-green">💼</div>
             <div>
               <div className="stat-value">{employeCount}</div>
@@ -149,20 +156,22 @@ export default function DashboardPage() {
         </div>
 
         {/* Table */}
-        <div className="card" style={{ padding: 0 }}>
-          <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border)' }}>
-            <h2 className="section-title" style={{ margin: 0 }}>Liste des comptes</h2>
+        <div className="table-card">
+          <div className="table-card-header">
+            <h2>Liste des comptes</h2>
+            {!loading && <span className="table-count">{users.length} compte{users.length !== 1 ? 's' : ''}</span>}
           </div>
 
           {error && (
-            <div style={{ padding: 24 }}>
-              <div className="alert alert-error"><span>⚠️</span> {error}</div>
+            <div style={{ padding: '16px 24px' }}>
+              <div className="alert alert-error" style={{ margin: 0 }}><span>⚠️</span><span>{error}</span></div>
             </div>
           )}
 
           {loading ? (
-            <div style={{ display: 'flex', justifyContent: 'center', padding: 48 }}>
-              <div className="spinner" style={{ width: 32, height: 32 }}></div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '56px 24px', gap: 16, color: 'var(--text-muted)' }}>
+              <div className="spinner" style={{ width: 36, height: 36, borderWidth: 3 }}></div>
+              <span style={{ fontSize: 14 }}>Chargement des comptes…</span>
             </div>
           ) : (
             <div className="table-wrapper">
@@ -178,15 +187,22 @@ export default function DashboardPage() {
                 <tbody>
                   {users.length === 0 ? (
                     <tr>
-                      <td colSpan={4} style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>
-                        Aucun compte trouvé
+                      <td colSpan={4}>
+                        <div className="empty-state">
+                          <div className="empty-state-icon">👥</div>
+                          <div className="empty-state-text">Aucun compte trouvé</div>
+                        </div>
                       </td>
                     </tr>
                   ) : (
                     users.map((u) => (
                       <tr key={u.id}>
-                        <td>#{u.id}</td>
-                        <td>{u.prenom} {u.nom}</td>
+                        <td>
+                          <span style={{ fontFamily: 'monospace', color: 'var(--text-muted)', fontSize: 13 }}>
+                            #{u.id}
+                          </span>
+                        </td>
+                        <td style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{u.prenom} {u.nom}</td>
                         <td>{u.email}</td>
                         <td>{getRoleBadge(u.roles)}</td>
                       </tr>
