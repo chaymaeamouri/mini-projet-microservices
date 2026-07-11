@@ -28,6 +28,7 @@ function Sidebar({ activePage }) {
 
       <div>
         <p className="nav-section-title">Navigation</p>
+
         {isAdmin && (
           <button
             className={`nav-item ${activePage === 'dashboard' ? 'active' : ''}`}
@@ -37,6 +38,7 @@ function Sidebar({ activePage }) {
             <span className="nav-icon">📊</span> Tableau de bord
           </button>
         )}
+
         <button
           className={`nav-item ${activePage === 'students' ? 'active' : ''}`}
           onClick={() => navigate('/students')}
@@ -44,6 +46,23 @@ function Sidebar({ activePage }) {
         >
           <span className="nav-icon">🎓</span> Étudiants
         </button>
+
+        <button
+          className={`nav-item ${activePage === 'profs' ? 'active' : ''}`}
+          onClick={() => navigate('/profs')}
+          id="nav-profs"
+        >
+          <span className="nav-icon">👨‍🏫</span> Professeurs
+        </button>
+
+        <button
+          className={`nav-item ${activePage === 'emploi' ? 'active' : ''}`}
+          onClick={() => navigate('/emploi')}
+          id="nav-emploi"
+        >
+          <span className="nav-icon">📅</span> Emploi du temps
+        </button>
+
         <button
           className={`nav-item ${activePage === 'profile' ? 'active' : ''}`}
           onClick={() => navigate('/profile')}

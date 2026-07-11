@@ -15,11 +15,15 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
     try {
-      const user = await login(email, password);
+      const cleanEmail = email.trim();
+      const cleanPassword = password.trim();
+      const user = await login(cleanEmail, cleanPassword);
       const isAdmin = user.roles?.includes('ROLE_ADMIN');
       navigate(isAdmin ? '/dashboard' : '/profile', { replace: true });
     } catch (err) {
-      const msg = err.response?.data?.message || 'Email ou mot de passe incorrect.';
+      const msg = err.response?.data?.message
+        || (err.request ? 'Impossible de contacter le serveur d’authentification. Vérifiez que le backend est lancé.' : err.message)
+        || 'Email ou mot de passe incorrect.';
       setError(msg);
     } finally {
       setLoading(false);
