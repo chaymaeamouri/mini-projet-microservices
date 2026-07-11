@@ -75,7 +75,6 @@ php bin/console doctrine:migrations:migrate
 php -S 127.0.0.1:8004 -t public/
 ```
 
-*(Note : Assurez-vous que les clés publiques/privées JWT sont bien présentes dans le dossier `config/jwt` de chaque microservice pour que la vérification des tokens fonctionne correctement).*
 
 ### 6. Frontend
 
@@ -92,7 +91,7 @@ Ouvrir : http://localhost:5173
 **Comptes de test par défaut** :
 | Rôle | Email | Mot de passe |
 |---|---|---|
-| **Admin** | admin@test.com | admin123 |
+| **Admin** | admin@test.com | password |
 | **Employé** | employe@test.com | employe123 |
 
 ## Fonctionnalités
