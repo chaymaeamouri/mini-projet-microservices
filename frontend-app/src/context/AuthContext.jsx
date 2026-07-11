@@ -10,19 +10,37 @@ export function AuthProvider({ children }) {
 
   // Charge le profil au démarrage si un token est présent
   useEffect(() => {
-    const stored = localStorage.getItem('user');
-    if (token && stored) {
-      try {
-        setUser(JSON.parse(stored));
-      } catch {
-        localStorage.removeItem('user');
+    const initAuth = async () => {
+      const storedUser = localStorage.getItem('user');
+      if (token) {
+        if (storedUser) {
+          try {
+            setUser(JSON.parse(storedUser));
+          } catch {
+            localStorage.removeItem('user');
+          }
+        }
+        
+        // Valide le token et rafraîchit les infos
+        try {
+          const res = await API.get('/auth/me');
+          setUser(res.data);
+          localStorage.setItem('user', JSON.stringify(res.data));
+        } catch (err) {
+          // Si 401, l'intercepteur API va gérer la déconnexion
+          console.error("Session invalide", err);
+        }
       }
-    }
-    setLoading(false);
+      setLoading(false);
+    };
+
+    initAuth();
   }, []);
 
   const login = async (email, password) => {
-    const res = await API.post('/auth/login', { email, password });
+    const cleanEmail = email.trim();
+    const cleanPassword = password.trim();
+    const res = await API.post('/auth/login', { email: cleanEmail, password: cleanPassword });
     const { token: jwt } = res.data;
     localStorage.setItem('token', jwt);
     setToken(jwt);

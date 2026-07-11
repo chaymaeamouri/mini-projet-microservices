@@ -20,7 +20,8 @@ API.interceptors.request.use((config) => {
 API.interceptors.response.use(
   (res) => res,
   (err) => {
-    if (err.response?.status === 401) {
+    // Si c'est une 401 et qu'on N'EST PAS en train d'essayer de se connecter
+    if (err.response?.status === 401 && !err.config.url.endsWith('/auth/login')) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.href = '/login';

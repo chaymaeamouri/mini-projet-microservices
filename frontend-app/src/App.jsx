@@ -5,6 +5,8 @@ import LoginPage    from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import ProfilePage  from './pages/ProfilePage';
 import StudentsPage from './pages/StudentsPage';
+import ProfsPage    from './pages/ProfsPage';
+import EmploiPage   from './pages/EmploiPage';
 
 export default function App() {
   return (
@@ -24,6 +26,16 @@ export default function App() {
           {/* Etudiants - tout utilisateur connecté */}
           <Route path="/students" element={
             <RequireAuth><StudentsPage /></RequireAuth>
+          } />
+
+          {/* Professeurs - tout utilisateur connecté */}
+          <Route path="/profs" element={
+            <RequireAuth><ProfsPage /></RequireAuth>
+          } />
+
+          {/* Emploi du temps - tout utilisateur connecté */}
+          <Route path="/emploi" element={
+            <RequireAuth><EmploiPage /></RequireAuth>
           } />
 
           {/* Profil - tout utilisateur connecté */}
